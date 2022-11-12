@@ -10,19 +10,22 @@ const InfoCards = () => {
             id: 1,
             icon: clock,
             name: 'Opening Hours',
-            description: "Openin Hours is 9Am to 6PM"
+            description: "Openin Hours is 9Am to 6PM",
+            bg: "bg-primary"
         },
         {
             id: 2,
             icon: marker,
             name: 'Visit Our Location',
-            description: "29/B, Block-C, Road-31, CTG, BD"
+            description: "29/B, Block-C, Road-31, CTG, BD",
+            bg: "bg-accent"
         },
         {
             id: 3,
             icon: phone,
             name: 'Contact Us Now',
-            description: "+123456789"
+            description: "+123456789",
+            bg: "bg-primary"
         }
     ]
     return (

@@ -1,10 +1,10 @@
 import React from 'react';
 
 const InfoCard = ({ info }) => {
-    const { id, icon, name, description } = info;
+    const { id, icon, name, description, bg } = info;
 
     return (
-        <div className="flex items-center rounded-xl w-96 p-10 bg-red-100 shadow-xl">
+        <div className={`${bg} flex items-center rounded-xl w-96 p-10 shadow-xl`}>
             <figure className="mr-5">
                 <img src={icon} alt={name} className="rounded-xl" />
             </figure>
