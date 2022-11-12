@@ -2,14 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-    const menuItems = <>
+    const menuItems = <React.Fragment>
         <li><Link to='/home'>Home</Link></li>
         <li><Link to='/about'>About</Link></li>
         <li><Link to='/appointment'>Appointment</Link></li>
         <li><Link to='/reviews'>Reviews</Link></li>
         <li><Link to='/contact'>Contact Us</Link></li>
         <li><Link to='/login'>Login</Link></li>
-    </>
+    </React.Fragment>
+
     return (
         <div className="navbar bg-base-100 flex justify-between">
             <div className="navbar-start">
