@@ -28,6 +28,7 @@ const InfoCards = () => {
             bg: "bg-primary"
         }
     ]
+
     return (
         <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 md:mt-48 mt-32 md:mx-0 mx-3'>
             {
