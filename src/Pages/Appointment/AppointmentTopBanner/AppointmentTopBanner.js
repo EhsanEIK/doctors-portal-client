@@ -16,7 +16,6 @@ const AppointmentTopBanner = ({ selectedDate, setSelectedDate }) => {
                             selected={selectedDate}
                             onSelect={setSelectedDate}
                         />
-                        <p>Selected Date: {format(selectedDate, 'PP')}</p>
                     </div>
                 </div>
             </div>
