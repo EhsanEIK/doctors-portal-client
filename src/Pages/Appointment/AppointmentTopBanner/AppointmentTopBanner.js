@@ -1,10 +1,9 @@
 import { format } from 'date-fns';
-import React, { useState } from 'react';
+import React from 'react';
 import { DayPicker } from 'react-day-picker';
 import chair from '../../../assets/images/chair.png';
 
-const AppointmentTopBanner = () => {
-    const [selectedDate, setSelectedDate] = useState(new Date());
+const AppointmentTopBanner = ({ selectedDate, setSelectedDate }) => {
 
     return (
         <section>
