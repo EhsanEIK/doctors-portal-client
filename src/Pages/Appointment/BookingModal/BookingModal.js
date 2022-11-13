@@ -1,12 +1,13 @@
 import { format } from 'date-fns';
 import React from 'react';
 
-const BookingModal = ({ treatment, selectedDate }) => {
+const BookingModal = ({ treatment, setTreatment, selectedDate }) => {
     // set availableOption details in treatment variable
     const { name, slots } = treatment;
     const date = format(selectedDate, "PP");
 
-    const handleSubmit = event => {
+    // booking submission handler
+    const handleBooking = event => {
         event.preventDefault();
         const form = event.target;
         const patient = form.fullName.value;
@@ -21,14 +22,14 @@ const BookingModal = ({ treatment, selectedDate }) => {
             email,
             slot,
         }
-        console.log(booking);
+        setTreatment(null);
     }
 
     return (
         <>
             <input type="checkbox" id="booking-modal" className="modal-toggle" />
             <div className="modal">
-                <form onSubmit={handleSubmit} className="modal-box relative">
+                <form onSubmit={handleBooking} className="modal-box relative">
                     <label htmlFor="booking-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
                     <h3 className="text-lg font-bold mb-10">{name}</h3>
                     <input name='date' disabled value={date} type="text" placeholder="Type here" className="input input-bordered mb-3 w-full" />
