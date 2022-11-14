@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 const LogIn = () => {
-    const { register, handleSubmit } = useForm();
+    const { register, formState: { errors }, handleSubmit } = useForm();
     const [data, setData] = useState('');
 
     const handleLogin = data => {
@@ -19,14 +19,23 @@ const LogIn = () => {
                         <label className="label">
                             <span className="label-text">Email</span>
                         </label>
-                        <input {...register("email", { required: true })} type="email" className="input input-bordered w-full" />
+                        <input
+                            {...register("email", { required: "Email is required" })}
+                            type="email" className="input input-bordered w-full" />
+                        {errors.email && <p role="alert" className='text-red-600'>{errors.email?.message}</p>}
                     </div>
                     <div className="form-control w-full">
                         <label className="label">
                             <span className="label-text">Password</span>
                         </label>
-                        <input {...register("password", { required: true })} type="password" className="input input-bordered w-full" />
+                        <input
+                            {...register("password", {
+                                required: "Password is required",
+                                minLength: { value: 6, message: "Password should be 6 characters" }
+                            })}
+                            type="password" className="input input-bordered w-full" />
                         <label className="label"><span className="label-text">Forgot Password?</span></label>
+                        {errors.password && <p role="alert" className='text-red-600'>{errors.password?.message}</p>}
                     </div>
                     <input className='btn btn-accent w-full mt-5' value="Login" type="submit" />
                 </form>
