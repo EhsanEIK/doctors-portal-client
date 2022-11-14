@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 
 const Navbar = () => {
+    const { user } = useContext(AuthContext);
+
     const menuItems = <React.Fragment>
         <li><Link to='/home'>Home</Link></li>
         <li><Link to='/about'>About</Link></li>
         <li><Link to='/appointment'>Appointment</Link></li>
         <li><Link to='/reviews'>Reviews</Link></li>
         <li><Link to='/contact'>Contact Us</Link></li>
-        <li><Link to='/login'>Login</Link></li>
+        {
+            user || user?.email ?
+                <>
+                    <li><Link>Logout</Link></li>
+                </>
+                : <li><Link to='/login'>Login</Link></li>
+        }
     </React.Fragment>
 
     return (
