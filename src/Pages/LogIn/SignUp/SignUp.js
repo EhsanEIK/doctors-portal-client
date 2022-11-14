@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
@@ -6,24 +6,28 @@ import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 
 const SignUp = () => {
     const { createUser } = useContext(AuthContext);
+    const [signUpErrorMsg, setSignUpErrorMsg] = useState('');
 
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const handleSignup = data => {
+    const handleSignup = (data, event) => {
+        setSignUpErrorMsg('');
         const email = data.email;
         const password = data.password;
         createUser(email, password)
             .then(result => {
                 const user = result.user;
                 toast.success('User created successfully');
+                event.target.reset();
             })
-            .catch(error => console.error(error));
+            .catch(error => setSignUpErrorMsg(error.message));
     }
 
     return (
         <div className='h-[500px] flex justify-center items-center'>
             <div className='w-96 shadow-lg p-10 md:mx-0 mx-3'>
                 <h1 className='text-2xl text-center font-semibold mb-5'>Sign Up</h1>
+                {signUpErrorMsg && <p className='text-base text-center text-red-600 my-3'>{signUpErrorMsg}</p>}
                 <form onSubmit={handleSubmit(handleSignup)}>
                     <div className="form-control w-full">
                         <label className="label">
