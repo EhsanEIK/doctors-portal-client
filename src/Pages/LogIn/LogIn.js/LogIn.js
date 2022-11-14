@@ -30,7 +30,7 @@ const LogIn = () => {
                         <input
                             {...register("password", {
                                 required: "Password is required",
-                                minLength: { value: 6, message: "Password should be 6 characters" }
+                                minLength: { value: 6, message: "Password must be 6 characters" }
                             })}
                             type="password" className="input input-bordered w-full" />
                         <label className="label"><span className="label-text">Forgot Password?</span></label>
