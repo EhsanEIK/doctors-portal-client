@@ -1,3 +1,4 @@
+import { GoogleAuthProvider } from 'firebase/auth';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -5,7 +6,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 
 const LogIn = () => {
-    const { logIn } = useContext(AuthContext);
+    const { logIn, socialMediaLogin } = useContext(AuthContext);
     const [logInErrorMsg, setLogInErrorMsg] = useState('');
 
     const { register, formState: { errors }, handleSubmit } = useForm();
@@ -13,6 +14,8 @@ const LogIn = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
+
+    const googleProvider = new GoogleAuthProvider();
 
     // login handler
     const handleLogin = data => {
@@ -23,6 +26,16 @@ const LogIn = () => {
 
         logIn(email, password)
             .then(result => {
+                toast.success('User log in successfully');
+                navigate(from, { replace: true });
+            })
+            .catch(error => setLogInErrorMsg(error.message));
+    }
+
+    // google login
+    const handleGoogleLogin = () => {
+        socialMediaLogin(googleProvider)
+            .then(() => {
                 toast.success('User log in successfully');
                 navigate(from, { replace: true });
             })
@@ -61,7 +74,7 @@ const LogIn = () => {
                 </form>
                 <p className='text-center text-sm mt-2'>New to Doctors Portal?<Link to='/signup' className='text-secondary ml-1'>Create New Account</Link> </p>
                 <div className="divider">OR</div>
-                <button className='btn btn-outline w-full mt-1'>Continue with Google</button>
+                <button onClick={handleGoogleLogin} className='btn btn-outline w-full mt-1'>Continue with Google</button>
             </div>
         </div>
     );
