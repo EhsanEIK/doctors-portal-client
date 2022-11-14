@@ -1,18 +1,39 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 
 const LogIn = () => {
+    const { logIn } = useContext(AuthContext);
+    const [logInErrorMsg, setLogInErrorMsg] = useState('');
+
     const { register, formState: { errors }, handleSubmit } = useForm();
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
+
+    // login handler
     const handleLogin = data => {
-        console.log(data)
+        setLogInErrorMsg('');
+
+        const email = data.email;
+        const password = data.password;
+
+        logIn(email, password)
+            .then(result => {
+                toast.success('User log in successfully');
+                navigate(from, { replace: true });
+            })
+            .catch(error => setLogInErrorMsg(error.message));
     }
 
     return (
         <div className='h-[500px] flex justify-center items-center'>
             <div className='w-96 shadow-lg p-10 md:mx-0 mx-3'>
                 <h1 className='text-2xl text-center font-semibold  mb-8'>Login</h1>
+                {logInErrorMsg && <p className='text-base text-center text-red-600 my-3'>{logInErrorMsg}</p>}
                 <form onSubmit={handleSubmit(handleLogin)}>
                     <div className="form-control w-full">
                         <label className="label">

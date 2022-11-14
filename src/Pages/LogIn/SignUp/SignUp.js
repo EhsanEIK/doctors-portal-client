@@ -12,6 +12,7 @@ const SignUp = () => {
 
     const navigate = useNavigate();
 
+    // sign up handler
     const handleSignup = (data, event) => {
         setSignUpErrorMsg('');
 
