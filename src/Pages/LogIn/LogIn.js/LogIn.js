@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 const LogIn = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const [data, setData] = useState('');
 
     const handleLogin = data => {
         console.log(data)
@@ -43,7 +42,7 @@ const LogIn = () => {
                 <div className="divider">OR</div>
                 <button className='btn btn-outline w-full mt-1'>Continue with Google</button>
             </div>
-        </div >
+        </div>
     );
 };
 
