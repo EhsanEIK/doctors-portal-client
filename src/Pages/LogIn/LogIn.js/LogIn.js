@@ -6,8 +6,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 
 const LogIn = () => {
-    const { logIn, socialMediaLogin } = useContext(AuthContext);
+    const { logIn, socialMediaLogin, resetPassword } = useContext(AuthContext);
     const [logInErrorMsg, setLogInErrorMsg] = useState('');
+    const [userEmail, setUserEmail] = useState();
 
     const { register, formState: { errors }, handleSubmit } = useForm();
 
@@ -42,6 +43,25 @@ const LogIn = () => {
             .catch(error => setLogInErrorMsg(error.message));
     }
 
+    // send password reset email
+    const handleResetPassword = () => {
+        setLogInErrorMsg('');
+
+        if (userEmail) {
+            resetPassword(userEmail)
+                .then(() => toast.success('Please check your email to reset password'))
+                .catch(error => setLogInErrorMsg(error.message));
+        }
+        else {
+            alert('Please type your email to reset password');
+        }
+    }
+
+    // get and set the user email
+    const handleOnBlurEmail = event => {
+        setUserEmail(event.target.value);
+    }
+
     return (
         <div className='h-[500px] flex justify-center items-center'>
             <div className='w-96 shadow-lg p-10 md:mx-0 mx-3'>
@@ -53,7 +73,10 @@ const LogIn = () => {
                             <span className="label-text">Email</span>
                         </label>
                         <input
-                            {...register("email", { required: "Email is required" })}
+                            {...register("email", {
+                                required: "Email is required",
+                                onBlur: handleOnBlurEmail
+                            })}
                             type="email" className="input input-bordered w-full" />
                         {errors.email && <p role="alert" className='text-red-600'>{errors.email?.message}</p>}
                     </div>
@@ -67,7 +90,10 @@ const LogIn = () => {
                                 minLength: { value: 6, message: "Password must be 6 characters" }
                             })}
                             type="password" className="input input-bordered w-full" />
-                        <label className="label"><span className="label-text">Forgot Password?</span></label>
+                        <label className="label">
+                            <span className="label-text">Forget Password?</span>
+                            <span onClick={handleResetPassword} className="link label-text hover:text-sky-600">Reset Password</span>
+                        </label>
                         {errors.password && <p role="alert" className='text-red-600'>{errors.password?.message}</p>}
                     </div>
                     <input className='btn btn-accent w-full mt-5' value="Login" type="submit" />
