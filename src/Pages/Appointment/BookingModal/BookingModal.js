@@ -19,7 +19,7 @@ const BookingModal = ({ treatment, setTreatment, selectedDate }) => {
         const phone = form.phone.value;
         const slot = form.slot.value;
         const booking = {
-            date,
+            appointmentDate: date,
             treatment: name,
             patient,
             email,
