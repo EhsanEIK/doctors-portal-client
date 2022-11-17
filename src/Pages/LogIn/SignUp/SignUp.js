@@ -27,12 +27,14 @@ const SignUp = () => {
             .then(result => {
                 handleUpdateUserProfile(name);
                 saveUser(name, email);
+                getJWTToken(email);
                 event.target.reset();
 
             })
             .catch(error => setSignUpErrorMsg(error.message));
     }
 
+    // save user name and email in own database
     const saveUser = (name, email) => {
         const user = { name, email };
 
@@ -47,7 +49,6 @@ const SignUp = () => {
             .then(data => {
                 if (data.acknowledged) {
                     toast.success('User created successfully');
-                    navigate('/login');
                 }
             })
     }
@@ -70,6 +71,18 @@ const SignUp = () => {
                 navigate('/');
             })
             .catch(error => setSignUpErrorMsg(error.message));
+    }
+
+    // get jwt token
+    const getJWTToken = email => {
+        fetch(`http://localhost:5000/jwt?email=${email}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.accessToken) {
+                    localStorage.setItem('accessToken', data.accessToken);
+                    navigate('/login');
+                }
+            });
     }
 
     return (
