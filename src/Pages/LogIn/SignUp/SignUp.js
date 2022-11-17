@@ -4,16 +4,22 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
+import useToken from '../../../hooks/useToken';
 
 const SignUp = () => {
     const { createUser, updateUserProfile, socialMediaLogin } = useContext(AuthContext);
-    const [signUpErrorMsg, setSignUpErrorMsg] = useState('');
-
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [signUpErrorMsg, setSignUpErrorMsg] = useState('');
+    const [createdUserEmail, setCreatedUserEmail] = useState('');
+    const [token] = useToken(createdUserEmail);
 
     const navigate = useNavigate();
 
     const googleProvider = new GoogleAuthProvider();
+
+    if (token) {
+        navigate('/login');
+    }
 
     // sign up handler
     const handleSignup = (data, event) => {
@@ -27,9 +33,7 @@ const SignUp = () => {
             .then(result => {
                 handleUpdateUserProfile(name);
                 saveUser(name, email);
-                getJWTToken(email);
                 event.target.reset();
-
             })
             .catch(error => setSignUpErrorMsg(error.message));
     }
@@ -49,6 +53,7 @@ const SignUp = () => {
             .then(data => {
                 if (data.acknowledged) {
                     toast.success('User created successfully');
+                    setCreatedUserEmail(email);
                 }
             })
     }
@@ -71,18 +76,6 @@ const SignUp = () => {
                 navigate('/');
             })
             .catch(error => setSignUpErrorMsg(error.message));
-    }
-
-    // get jwt token
-    const getJWTToken = email => {
-        fetch(`http://localhost:5000/jwt?email=${email}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.accessToken) {
-                    localStorage.setItem('accessToken', data.accessToken);
-                    navigate('/login');
-                }
-            });
     }
 
     return (
