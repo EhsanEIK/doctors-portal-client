@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import toast from 'react-hot-toast';
 
 const AllUsers = () => {
-    const { data: users = [] } = useQuery({
+    const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async function () {
             const res = await fetch('http://localhost:5000/users');
@@ -10,6 +11,22 @@ const AllUsers = () => {
             return data;
         }
     })
+
+    const handleMakeAdmin = id => {
+        fetch(`http://localhost:5000/users/admin/${id}`, {
+            method: "PUT",
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.modifiedCount > 0) {
+                    toast.success("Make admin successfully");
+                    refetch();
+                }
+            })
+    }
 
     return (
         <div>
@@ -33,7 +50,9 @@ const AllUsers = () => {
                                     <td>{user.name}</td>
                                     <td>{user.email}</td>
                                     <td>
-                                        <button className='btn btn-primary btn-sm'>Make Admin</button>
+                                        {
+                                            user?.role !== 'admin' && <button onClick={() => handleMakeAdmin(user._id)} className='btn btn-primary btn-sm'>Make Admin</button>
+                                        }
                                     </td>
                                     <td>
                                         <button className='btn bg-red-600 border-red-600 text-white btn-sm'>Delete</button>
