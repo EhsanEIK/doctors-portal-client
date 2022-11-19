@@ -1,8 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import ConfirmationModel from '../../Shared/ConfirmationModel/ConfirmationModel';
 
 const ManagedDoctors = () => {
+    const [deletingDoctor, setDeletingDoctor] = useState(null);
+
     const { data: doctors = [] } = useQuery({
         queryKey: ['doctors'],
         queryFn: async () => {
@@ -15,6 +18,23 @@ const ManagedDoctors = () => {
             }
         }
     })
+
+    const closeModal = () => {
+        setDeletingDoctor(null);
+    }
+
+    const handleDelete = doctor => {
+        fetch(`http://localhost:5000/doctors/${doctor._id}`, {
+            method: "DELETE"
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.deletedCount > 0) {
+                    toast.success(`${doctor.name} deleted successfully`);
+                    setDeletingDoctor(null);
+                }
+            })
+    }
 
     return (
         <div>
@@ -45,14 +65,24 @@ const ManagedDoctors = () => {
                                     <td>{doctor.name}</td>
                                     <td>{doctor.specialty}</td>
                                     <td>
-                                        <label htmlFor="confirmation-modal" className='btn btn-sm bg-red-600 border-red-600 text-white'>Delete</label>
+                                        <label onClick={() => setDeletingDoctor(doctor)}
+                                            htmlFor="confirmation-modal"
+                                            className='btn btn-sm bg-red-600 border-red-600 text-white'>
+                                            Delete</label>
                                     </td>
                                 </tr>)
                         }
                     </tbody>
                 </table>
             </div>
-            <ConfirmationModel></ConfirmationModel>
+            {
+                deletingDoctor && <ConfirmationModel
+                    title={'Are you sure to delete?'}
+                    message={`If you delete ${deletingDoctor.name}. I can't be undone.`}
+                    closeModal={closeModal}
+                    successAction={handleDelete}
+                    modalData={deletingDoctor}></ConfirmationModel>
+            }
         </div>
     );
 };
