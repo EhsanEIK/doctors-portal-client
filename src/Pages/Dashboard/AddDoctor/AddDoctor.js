@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 const AddDoctor = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [errorMsg, setErrorMsg] = useState('');
     const imageHostKey = process.env.REACT_APP_imgbbHostKey;
 
     const { data: specilities = [] } = useQuery({
@@ -25,6 +25,7 @@ const AddDoctor = () => {
         formData.append('image', image);
         const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
 
+        // save the image data to imageBB website and hosted the image on there
         fetch(url, {
             method: "POST",
             body: formData
@@ -32,8 +33,27 @@ const AddDoctor = () => {
             .then(res => res.json())
             .then(imageData => {
                 if (imageData.success) {
-                    const imageURL = imageData.data.url
-                    console.log(imageURL)
+                    const imageURL = imageData.data.url;
+                    const doctorInfo = {
+                        name: data.name,
+                        email: data.email,
+                        specialty: data.specialty,
+                        image: imageURL,
+                    }
+                    // saved the doctorInfo into database
+                    fetch('http://localhost:5000/doctors', {
+                        method: "POST",
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify(doctorInfo)
+                    })
+                        .then(res => res.json())
+                        .then(info => {
+                            if (info.acknowledged) {
+                                toast.success(`${data.name} added successfully`);
+                            }
+                        })
                 }
             })
     }
@@ -43,7 +63,6 @@ const AddDoctor = () => {
             <div className='h-[500px]'>
                 <div className='w-96 shadow-lg p-10 pt-2 md:mx-0 mx-3'>
                     <h1 className='text-3xl text-center font-semibold mb-5'>Add A Doctor</h1>
-                    {errorMsg && <p className='text-base text-center text-red-600 my-3'>{errorMsg}</p>}
                     <form onSubmit={handleSubmit(handleAddDoctor)}>
                         <div className="form-control w-full">
                             <label className="label">
