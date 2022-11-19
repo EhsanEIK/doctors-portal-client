@@ -10,7 +10,11 @@ const ManagedDoctors = () => {
         queryKey: ['doctors'],
         queryFn: async () => {
             try {
-                const res = await fetch('http://localhost:5000/doctors');
+                const res = await fetch('http://localhost:5000/doctors', {
+                    headers: {
+                        authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                    }
+                });
                 const data = await res.json();
                 return data;
             } catch (error) {
@@ -19,13 +23,18 @@ const ManagedDoctors = () => {
         }
     })
 
+    // close confirmation modal
     const closeModal = () => {
         setDeletingDoctor(null);
     }
 
+    // delete the doctors from db
     const handleDelete = doctor => {
         fetch(`http://localhost:5000/doctors/${doctor._id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
         })
             .then(res => res.json())
             .then(data => {
