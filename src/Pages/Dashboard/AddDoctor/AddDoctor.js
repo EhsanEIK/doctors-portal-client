@@ -19,13 +19,32 @@ const AddDoctor = () => {
         }
     });
 
+    const handleAddDoctor = data => {
+        const image = data.image[0];
+        const formData = new FormData();
+        formData.append('image', image);
+        const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
+
+        fetch(url, {
+            method: "POST",
+            body: formData
+        })
+            .then(res => res.json())
+            .then(imageData => {
+                if (imageData.success) {
+                    const imageURL = imageData.data.url
+                    console.log(imageURL)
+                }
+            })
+    }
+
     return (
         <div>
             <div className='h-[500px]'>
                 <div className='w-96 shadow-lg p-10 pt-2 md:mx-0 mx-3'>
                     <h1 className='text-3xl text-center font-semibold mb-5'>Add A Doctor</h1>
                     {errorMsg && <p className='text-base text-center text-red-600 my-3'>{errorMsg}</p>}
-                    <form>
+                    <form onSubmit={handleSubmit(handleAddDoctor)}>
                         <div className="form-control w-full">
                             <label className="label">
                                 <span className="label-text">Name</span>
