@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import ConfirmationModel from '../../Shared/ConfirmationModel/ConfirmationModel';
 
 const ManagedDoctors = () => {
     const { data: doctors = [] } = useQuery({
@@ -44,13 +45,14 @@ const ManagedDoctors = () => {
                                     <td>{doctor.name}</td>
                                     <td>{doctor.specialty}</td>
                                     <td>
-                                        <button className='btn btn-sm bg-red-600 border-red-600 text-white'>Delete</button>
+                                        <label htmlFor="confirmation-modal" className='btn btn-sm bg-red-600 border-red-600 text-white'>Delete</label>
                                     </td>
                                 </tr>)
                         }
                     </tbody>
                 </table>
             </div>
+            <ConfirmationModel></ConfirmationModel>
         </div>
     );
 };
