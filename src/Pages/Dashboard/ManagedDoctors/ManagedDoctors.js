@@ -6,7 +6,7 @@ import ConfirmationModel from '../../Shared/ConfirmationModel/ConfirmationModel'
 const ManagedDoctors = () => {
     const [deletingDoctor, setDeletingDoctor] = useState(null);
 
-    const { data: doctors = [] } = useQuery({
+    const { data: doctors = [], refetch } = useQuery({
         queryKey: ['doctors'],
         queryFn: async () => {
             try {
@@ -32,6 +32,7 @@ const ManagedDoctors = () => {
                 if (data.deletedCount > 0) {
                     toast.success(`${doctor.name} deleted successfully`);
                     setDeletingDoctor(null);
+                    refetch();
                 }
             })
     }
