@@ -2,10 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const AddDoctor = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const imageHostKey = process.env.REACT_APP_imgbbHostKey;
+
+    const navigate = useNavigate();
 
     const { data: specilities = [] } = useQuery({
         queryKey: ['appointmentSpecialty'],
@@ -52,6 +55,7 @@ const AddDoctor = () => {
                         .then(info => {
                             if (info.acknowledged) {
                                 toast.success(`${data.name} added successfully`);
+                                navigate('/dashboard/managedDoctors');
                             }
                         })
                 }
