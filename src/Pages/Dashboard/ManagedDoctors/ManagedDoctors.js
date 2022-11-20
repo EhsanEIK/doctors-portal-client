@@ -48,7 +48,7 @@ const ManagedDoctors = () => {
 
     return (
         <div>
-            <h1 className='text-3xl text-center font-semibold mb-5'>AManaged Doctors</h1>
+            <h1 className='text-3xl text-center font-semibold mb-5'>Managed Doctors</h1>
             <div className="overflow-x-auto">
                 <table className="table w-full">
                     <thead>
