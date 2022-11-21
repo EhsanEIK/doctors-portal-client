@@ -12,10 +12,10 @@ const Payment = () => {
     const { treatment, price, appointmentDate, slot } = booking;
 
     // use navigation for showing loading icon until the data is fully loaded
-    const navigation = useNavigation();
-    if (navigation.state === "loading") {
-        return <Loading></Loading>
-    }
+    // const navigation = useNavigation();
+    // if (navigation.state === "loading") {
+    //     return <Loading></Loading>
+    // }
 
     return (
         <div>
