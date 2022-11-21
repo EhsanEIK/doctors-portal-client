@@ -6,7 +6,7 @@ const AllUsers = () => {
     const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async function () {
-            const res = await fetch('http://localhost:5000/users', {
+            const res = await fetch('https://doctors-portal-server-flame.vercel.app/users', {
                 headers: {
                     authorization: `Bearer ${localStorage.getItem('accessToken')}`
                 }
@@ -17,7 +17,7 @@ const AllUsers = () => {
     })
 
     const handleMakeAdmin = id => {
-        fetch(`http://localhost:5000/users/admin/${id}`, {
+        fetch(`https://doctors-portal-server-flame.vercel.app/users/admin/${id}`, {
             method: "PUT",
             headers: {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`

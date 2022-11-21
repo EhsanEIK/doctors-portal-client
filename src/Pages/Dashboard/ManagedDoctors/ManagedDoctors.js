@@ -10,7 +10,7 @@ const ManagedDoctors = () => {
         queryKey: ['doctors'],
         queryFn: async () => {
             try {
-                const res = await fetch('http://localhost:5000/doctors', {
+                const res = await fetch('https://doctors-portal-server-flame.vercel.app/doctors', {
                     headers: {
                         authorization: `Bearer ${localStorage.getItem('accessToken')}`
                     }
@@ -30,7 +30,7 @@ const ManagedDoctors = () => {
 
     // delete the doctors from db
     const handleDelete = doctor => {
-        fetch(`http://localhost:5000/doctors/${doctor._id}`, {
+        fetch(`https://doctors-portal-server-flame.vercel.app/doctors/${doctor._id}`, {
             method: "DELETE",
             headers: {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`

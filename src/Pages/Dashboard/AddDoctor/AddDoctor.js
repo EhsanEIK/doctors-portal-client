@@ -14,7 +14,7 @@ const AddDoctor = () => {
         queryKey: ['appointmentSpecialty'],
         queryFn: async () => {
             try {
-                const res = await fetch('http://localhost:5000/appointmentSpecialty');
+                const res = await fetch('https://doctors-portal-server-flame.vercel.app/appointmentSpecialty');
                 const data = await res.json();
                 return data;
             }
@@ -44,7 +44,7 @@ const AddDoctor = () => {
                         image: imageURL,
                     }
                     // saved the doctorInfo into database
-                    fetch('http://localhost:5000/doctors', {
+                    fetch('https://doctors-portal-server-flame.vercel.app/doctors', {
                         method: "POST",
                         headers: {
                             'content-type': 'application/json',
